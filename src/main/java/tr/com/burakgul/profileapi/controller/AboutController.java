@@ -1,9 +1,36 @@
 package tr.com.burakgul.profileapi.controller;
 
-/**
- * Kaydet,
- * Görüntüleme,
- * Güncelleme
- */
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import tr.com.burakgul.profileapi.model.dto.AboutRequest;
+import tr.com.burakgul.profileapi.model.dto.AboutResponse;
+import tr.com.burakgul.profileapi.service.AboutService;
+
+@RestController
+@RequestMapping("/about")
+@RequiredArgsConstructor
 public class AboutController {
+
+    private final AboutService aboutService;
+
+    @GetMapping
+    public ResponseEntity<AboutResponse> findAbout(){
+        return ResponseEntity.ok(this.aboutService.findAbout());
+    }
+
+    @PostMapping
+    public ResponseEntity<AboutResponse> save(@RequestBody AboutRequest aboutRequest){
+        return ResponseEntity.ok(this.aboutService.save(aboutRequest));
+    }
+
+    @PutMapping
+    public ResponseEntity<AboutResponse> update(@RequestBody AboutRequest aboutRequest){
+        return ResponseEntity.ok(this.aboutService.update(aboutRequest));
+    }
 }

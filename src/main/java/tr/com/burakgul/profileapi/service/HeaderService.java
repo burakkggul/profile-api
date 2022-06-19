@@ -19,7 +19,6 @@ import tr.com.burakgul.profileapi.repository.ImageRepository;
 import tr.com.burakgul.profileapi.repository.SocialMediaRepository;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,30 +57,36 @@ public class HeaderService {
     */
 
     public HeaderResponse save(HeaderRequest headerRequest) {
-        Header header = this.dtoMapper.mapModel(headerRequest,Header.class);
+        Header header = this.dtoMapper.mapModel(headerRequest, Header.class);
         Image image = this.imageRepository.save(header.getImage());
         List<SocialMedia> savedSocialMedia = this.socialMediaRepository.saveAll(header.getSocialMedia());
         header.setImage(image);
         header.setSocialMedia(savedSocialMedia);
         Header savedHeader = this.headerRepository.save(header);
-        HeaderResponse headerResponse = this.dtoMapper.mapModel(savedHeader,HeaderResponse.class);
+        HeaderResponse headerResponse = this.dtoMapper.mapModel(savedHeader, HeaderResponse.class);
         return headerResponse;
     }
 
+    /**
+     * Burda socialMedia ve image güncellenmiyor.
+     * Bunların güncellenmesini sağlayacak şekilde bu metodu güncelleyelim.
+     * @param headerRequest
+     * @return
+     */
     public HeaderResponse update(HeaderRequest headerRequest) {
-        Header upToDateHeader = this.dtoMapper.mapModel(headerRequest,Header.class);
+        Header upToDateHeader = this.dtoMapper.mapModel(headerRequest, Header.class);
         Header header = this.headerRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Header bulunamadı."));
-        ObjectUpdaterUtil.updateObject(header,upToDateHeader, Arrays.asList("id", "socialMedia", "image"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı."));
+        ObjectUpdaterUtil.updateObject(header, upToDateHeader, Arrays.asList("id", "socialMedia", "image"));
         Header savedHeader = this.headerRepository.save(header);
-        return this.dtoMapper.mapModel(savedHeader,HeaderResponse.class);
+        return this.dtoMapper.mapModel(savedHeader, HeaderResponse.class);
     }
 
     public Object findHeader() {
         Optional<Header> headerOptional = this.headerRepository.findTopByOrderByIdDesc();
-        if(headerOptional.isPresent()){
-            return this.dtoMapper.mapModel(headerOptional.get(),HeaderResponse.class);
-        }else {
+        if (headerOptional.isPresent()) {
+            return this.dtoMapper.mapModel(headerOptional.get(), HeaderResponse.class);
+        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı.");
         }
     }

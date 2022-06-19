@@ -19,6 +19,7 @@ public class ObjectUpdaterUtil {
                 if(!nonUpdatableFieldsName.contains(field.getName())){
                     field.setAccessible(true);
                     field.set(first,field.get(second));
+                    // field.set(first,5);
                 }
             }
         }catch (IllegalAccessException illegalAccessException){

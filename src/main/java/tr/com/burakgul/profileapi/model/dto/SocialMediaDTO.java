@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SocialMediaDTO {
+    private Long id;
     private String name;
     private String url;
 }

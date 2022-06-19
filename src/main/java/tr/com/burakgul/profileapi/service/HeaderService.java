@@ -1,7 +1,6 @@
 package tr.com.burakgul.profileapi.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -41,9 +40,13 @@ public class HeaderService {
     private final ImageRepository imageRepository;
     private final SocialMediaRepository socialMediaRepository;
     private final HeaderRepository headerRepository;
+
+    private final SocialMediaService socialMediaService;
+    private final ImageService imageService;
+
     // private final ObjectMapper objectMapper;
+    // private final ModelMapper modelMapper;
     private final DTOMapper dtoMapper;
-    private final ModelMapper modelMapper;
 
     /*
     public HeaderResponse save(HeaderRequest headerRequest) {
@@ -75,10 +78,10 @@ public class HeaderService {
      */
     public HeaderResponse update(HeaderRequest headerRequest) {
         Header upToDateHeader = this.dtoMapper.mapModel(headerRequest, Header.class);
-        Header header = this.headerRepository.findTopByOrderByIdDesc()
+        Header currentHeader = this.headerRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı."));
-        ObjectUpdaterUtil.updateObject(header, upToDateHeader, Arrays.asList("id", "socialMedia", "image"));
-        Header savedHeader = this.headerRepository.save(header);
+        this.updateHeaderObjectWithRelations(currentHeader,upToDateHeader);
+        Header savedHeader = this.headerRepository.save(currentHeader);
         return this.dtoMapper.mapModel(savedHeader, HeaderResponse.class);
     }
 
@@ -89,5 +92,13 @@ public class HeaderService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı.");
         }
+    }
+
+    private void updateHeaderObjectWithRelations(Header currentHeader, Header upToDateHeader){
+        ObjectUpdaterUtil.updateObject(currentHeader, upToDateHeader, Arrays.asList("id", "socialMedia", "image"));
+        List<SocialMedia> socialMedia = this.socialMediaService.saveAll(upToDateHeader.getSocialMedia());
+        currentHeader.setSocialMedia(socialMedia);
+        Image image = this.imageService.save(upToDateHeader.getImage());
+        currentHeader.setImage(image);
     }
 }

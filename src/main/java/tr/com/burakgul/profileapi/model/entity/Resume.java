@@ -3,6 +3,7 @@ package tr.com.burakgul.profileapi.model.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.jdbc.Work;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,26 +16,30 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "about")
+@Table(name = "resume")
 @Getter
 @Setter
 @NoArgsConstructor
-public class About {
+public class Resume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "page_title")
-    private String pageTitle;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "header")
-    private String header;
-
-    @Column(name = "content", columnDefinition = "text")
-    private String content;
+    @Column(name = "work_experience_title")
+    private String workExperienceTitle;
 
     @OneToMany
-    @JoinColumn(name = "about_id")
-    private List<Contact> contacts;
+    @JoinColumn(name = "resume_id")
+    private List<WorkExperience> workExperiences;
+
+    @Column(name = "education_title")
+    private String educationTitle;
+
+    @OneToMany
+    @JoinColumn(name = "resume_id")
+    private List<Education> educations;
 }

@@ -12,7 +12,6 @@ import tr.com.burakgul.profileapi.model.dto.ResumeDTO;
 import tr.com.burakgul.profileapi.service.ResumeService;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +21,8 @@ public class ResumeController {
     private final ResumeService resumeService;
 
     @GetMapping
-    public ResponseEntity<List<ResumeDTO>> findAll(){
-        return ResponseEntity.ok(this.resumeService.findAll());
+    public ResponseEntity<ResumeDTO> find(){
+        return ResponseEntity.ok(this.resumeService.find());
     }
 
     @PutMapping

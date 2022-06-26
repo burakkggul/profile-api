@@ -1,9 +1,9 @@
-package tr.com.burakgul.profileapi.service;
+package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tr.com.burakgul.profileapi.model.entity.Contact;
-import tr.com.burakgul.profileapi.repository.ContactRepository;
+import tr.com.burakgul.profileapi.repository.main.ContactRepository;
 
 import java.util.List;
 

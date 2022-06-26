@@ -1,4 +1,4 @@
-package tr.com.burakgul.profileapi.service;
+package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import tr.com.burakgul.profileapi.model.dto.AboutRequest;
 import tr.com.burakgul.profileapi.model.dto.AboutResponse;
 import tr.com.burakgul.profileapi.model.entity.About;
 import tr.com.burakgul.profileapi.model.entity.Contact;
-import tr.com.burakgul.profileapi.repository.AboutRepository;
+import tr.com.burakgul.profileapi.repository.main.AboutRepository;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package tr.com.burakgul.profileapi.service;
+package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,9 +13,9 @@ import tr.com.burakgul.profileapi.model.dto.HeaderResponse;
 import tr.com.burakgul.profileapi.model.entity.Header;
 import tr.com.burakgul.profileapi.model.entity.Image;
 import tr.com.burakgul.profileapi.model.entity.SocialMedia;
-import tr.com.burakgul.profileapi.repository.HeaderRepository;
-import tr.com.burakgul.profileapi.repository.ImageRepository;
-import tr.com.burakgul.profileapi.repository.SocialMediaRepository;
+import tr.com.burakgul.profileapi.repository.main.HeaderRepository;
+import tr.com.burakgul.profileapi.repository.main.ImageRepository;
+import tr.com.burakgul.profileapi.repository.main.SocialMediaRepository;
 
 import java.util.Arrays;
 import java.util.List;

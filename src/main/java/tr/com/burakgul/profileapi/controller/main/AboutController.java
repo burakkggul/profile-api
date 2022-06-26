@@ -1,4 +1,4 @@
-package tr.com.burakgul.profileapi.controller;
+package tr.com.burakgul.profileapi.controller.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.burakgul.profileapi.model.dto.AboutRequest;
 import tr.com.burakgul.profileapi.model.dto.AboutResponse;
-import tr.com.burakgul.profileapi.service.AboutService;
+import tr.com.burakgul.profileapi.service.main.AboutService;
 
 @RestController
 @RequestMapping("/about")

@@ -1,4 +1,4 @@
-package tr.com.burakgul.profileapi.controller;
+package tr.com.burakgul.profileapi.controller.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.burakgul.profileapi.model.dto.ProjectSectionDTO;
-import tr.com.burakgul.profileapi.service.ProjectSectionService;
+import tr.com.burakgul.profileapi.service.main.ProjectSectionService;
 
 import java.net.URI;
 

@@ -50,6 +50,7 @@ public class Post {
     @Column(name = "content", columnDefinition = "text")
     private String content;
 
+    // select * from comment where post_id=1312;
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 

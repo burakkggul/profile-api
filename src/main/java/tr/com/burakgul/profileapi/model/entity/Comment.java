@@ -3,6 +3,7 @@ package tr.com.burakgul.profileapi.model.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tr.com.burakgul.profileapi.model.entity.base.HistoricalBaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Comment {
+public class Comment extends HistoricalBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,6 @@ public class Comment {
 
     @Column(name = "content", columnDefinition = "text")
     private String content;
-
-    @Column(name = "created_date")
-    private Date createdDate;
-
-    @Column(name = "last_modified_date")
-    private Date lastModifiedDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")

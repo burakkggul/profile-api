@@ -47,8 +47,8 @@ public class AboutService {
     @Transactional
     public AboutResponse save(AboutRequest aboutRequest) {
         About aboutToSave = this.dtoMapper.mapModel(aboutRequest, About.class);
-        List<Contact> contacts = this.contactService.saveAll(aboutToSave.getContacts());
-        aboutToSave.setContacts(contacts);
+        /*List<Contact> contacts = this.contactService.saveAll(aboutToSave.getContacts());
+        aboutToSave.setContacts(contacts);*/
         About savedAbout = this.aboutRepository.save(aboutToSave);
         return this.dtoMapper.mapModel(savedAbout, AboutResponse.class);
     }

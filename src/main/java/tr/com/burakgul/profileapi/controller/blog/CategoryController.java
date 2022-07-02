@@ -42,6 +42,7 @@ public class CategoryController {
                 .body(this.categoryService.save(categoryRequest));
     }
 
+    //TODO soft delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         this.categoryService.deleteById(id);

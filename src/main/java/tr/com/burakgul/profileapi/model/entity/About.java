@@ -36,6 +36,7 @@ public class About {
     @Column(name = "content", columnDefinition = "text")
     private String content;
 
+    /*@Cascade(CascadeType.SAVE_UPDATE)*/
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "about_id")
     private List<Contact> contacts;

@@ -2,7 +2,7 @@ package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tr.com.burakgul.profileapi.model.dto.ProjectSectionDTO;
+import tr.com.burakgul.profileapi.model.dto.main.ProjectSectionDTO;
 import tr.com.burakgul.profileapi.repository.main.ProjectSectionRepository;
 
 @Service

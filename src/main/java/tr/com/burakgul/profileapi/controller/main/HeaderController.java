@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tr.com.burakgul.profileapi.model.dto.HeaderRequest;
-import tr.com.burakgul.profileapi.model.dto.HeaderResponse;
+import tr.com.burakgul.profileapi.model.dto.main.HeaderRequest;
+import tr.com.burakgul.profileapi.model.dto.main.HeaderResponse;
 import tr.com.burakgul.profileapi.service.main.HeaderService;
 
 @RestController

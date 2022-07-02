@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tr.com.burakgul.profileapi.model.dto.CategoryDTO;
-import tr.com.burakgul.profileapi.model.dto.CategoryRequest;
-import tr.com.burakgul.profileapi.model.entity.Category;
+import tr.com.burakgul.profileapi.model.dto.blog.CategoryResponse;
+import tr.com.burakgul.profileapi.model.dto.blog.CategoryRequest;
 import tr.com.burakgul.profileapi.service.blog.CategoryService;
 
 import java.net.URI;
@@ -26,18 +25,18 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> findAll() {
+    public ResponseEntity<List<CategoryResponse>> findAll() {
         return ResponseEntity.ok(this.categoryService.findAll());
     }
 
     @PutMapping
-    public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO categoryDTO) {
-        return ResponseEntity.ok(this.categoryService.update(categoryDTO));
+    public ResponseEntity<CategoryResponse> update(@RequestBody CategoryResponse categoryResponse) {
+        return ResponseEntity.ok(this.categoryService.update(categoryResponse));
     }
 
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> save(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryResponse> save(@RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.created(URI.create("/blog/category"))
                 .body(this.categoryService.save(categoryRequest));
     }

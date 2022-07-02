@@ -2,7 +2,7 @@ package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tr.com.burakgul.profileapi.model.dto.WorkExperienceDTO;
+import tr.com.burakgul.profileapi.model.dto.main.WorkExperienceDTO;
 import tr.com.burakgul.profileapi.repository.main.WorkExperienceRepository;
 
 import java.util.ArrayList;

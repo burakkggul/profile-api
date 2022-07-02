@@ -8,9 +8,9 @@ import org.springframework.web.server.ResponseStatusException;
 import tr.com.burakgul.profileapi.core.helper.DTOMapper;
 import tr.com.burakgul.profileapi.core.util.ObjectHistoryUtil;
 import tr.com.burakgul.profileapi.core.util.ObjectUpdaterUtil;
-import tr.com.burakgul.profileapi.model.dto.CategoryDTO;
-import tr.com.burakgul.profileapi.model.dto.CategoryRequest;
-import tr.com.burakgul.profileapi.model.entity.Category;
+import tr.com.burakgul.profileapi.model.dto.blog.CategoryResponse;
+import tr.com.burakgul.profileapi.model.dto.blog.CategoryRequest;
+import tr.com.burakgul.profileapi.model.entity.blog.Category;
 import tr.com.burakgul.profileapi.repository.blog.CategoryRepository;
 
 import java.util.Arrays;
@@ -25,35 +25,35 @@ public class CategoryService {
     private final DTOMapper dtoMapper;
 
     @Transactional
-    public CategoryDTO save(CategoryRequest categoryRequest) {
+    public CategoryResponse save(CategoryRequest categoryRequest) {
         Category category = this.dtoMapper.mapModel(categoryRequest, Category.class);
         ObjectHistoryUtil.initHistoricalEntity(category);
         Category savedCategory = this.categoryRepository.save(category);
-        return this.dtoMapper.mapModel(savedCategory, CategoryDTO.class);
+        return this.dtoMapper.mapModel(savedCategory, CategoryResponse.class);
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAll() {
+    public List<CategoryResponse> findAll() {
         List<Category> categories = this.categoryRepository.findAll();
         if (!categories.isEmpty()) {
-            return this.dtoMapper.mapListModel(categories, CategoryDTO.class);
+            return this.dtoMapper.mapListModel(categories, CategoryResponse.class);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kategori bulunamadı.");
         }
     }
 
     @Transactional
-    public CategoryDTO update(CategoryDTO categoryDTO){
-        Optional<Category> oldCategoryOptional = categoryRepository.findById(categoryDTO.getId());
+    public CategoryResponse update(CategoryResponse categoryResponse){
+        Optional<Category> oldCategoryOptional = categoryRepository.findById(categoryResponse.getId());
         if(oldCategoryOptional.isPresent()){
-            Category upToDateCategory = this.dtoMapper.mapModel(categoryDTO,Category.class);
+            Category upToDateCategory = this.dtoMapper.mapModel(categoryResponse,Category.class);
             Category oldCategory = oldCategoryOptional.get();
             ObjectUpdaterUtil.updateObject(oldCategory,
                     upToDateCategory,
                     Arrays.asList("id", "createdDate", "lastModifiedDate"));
             ObjectHistoryUtil.setLastModifiedDate(oldCategory);
             Category updatedCategory = this.categoryRepository.save(oldCategory);
-            return this.dtoMapper.mapModel(updatedCategory,CategoryDTO.class);
+            return this.dtoMapper.mapModel(updatedCategory, CategoryResponse.class);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bu id ile kategori bulunamadı.");
         }

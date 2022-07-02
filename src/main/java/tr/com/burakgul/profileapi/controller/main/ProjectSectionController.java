@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tr.com.burakgul.profileapi.model.dto.ProjectSectionDTO;
+import tr.com.burakgul.profileapi.model.dto.main.ProjectSectionDTO;
 import tr.com.burakgul.profileapi.service.main.ProjectSectionService;
 
 import java.net.URI;

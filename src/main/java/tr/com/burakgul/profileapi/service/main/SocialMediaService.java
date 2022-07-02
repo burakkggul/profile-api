@@ -2,7 +2,7 @@ package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tr.com.burakgul.profileapi.model.entity.SocialMedia;
+import tr.com.burakgul.profileapi.model.entity.main.SocialMedia;
 import tr.com.burakgul.profileapi.repository.main.SocialMediaRepository;
 
 import java.util.List;

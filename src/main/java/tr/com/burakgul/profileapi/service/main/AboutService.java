@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import tr.com.burakgul.profileapi.core.helper.DTOMapper;
 import tr.com.burakgul.profileapi.core.util.ObjectUpdaterUtil;
-import tr.com.burakgul.profileapi.model.dto.AboutRequest;
-import tr.com.burakgul.profileapi.model.dto.AboutResponse;
-import tr.com.burakgul.profileapi.model.entity.About;
-import tr.com.burakgul.profileapi.model.entity.Contact;
+import tr.com.burakgul.profileapi.model.dto.main.AboutRequest;
+import tr.com.burakgul.profileapi.model.dto.main.AboutResponse;
+import tr.com.burakgul.profileapi.model.entity.main.About;
+import tr.com.burakgul.profileapi.model.entity.main.Contact;
 import tr.com.burakgul.profileapi.repository.main.AboutRepository;
 
 import java.util.Arrays;

@@ -1,6 +1,7 @@
 package tr.com.burakgul.profileapi.controller.blog;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import tr.com.burakgul.profileapi.model.dto.blog.PostRequest;
 import tr.com.burakgul.profileapi.model.dto.blog.PostResponse;
 import tr.com.burakgul.profileapi.service.blog.PostService;
@@ -30,8 +32,8 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<PostResponse> update(@RequestBody PostRequest postRequest){
-        return ResponseEntity.ok(this.postService.update(postRequest));
+    public ResponseEntity<PostResponse> update(@RequestBody PostRequest postRequest, @RequestParam Long postId){
+        return ResponseEntity.ok(this.postService.update(postRequest, postId));
     }
 
     @GetMapping

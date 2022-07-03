@@ -14,6 +14,7 @@ import tr.com.burakgul.profileapi.model.entity.blog.Category;
 import tr.com.burakgul.profileapi.repository.blog.CategoryRepository;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +62,13 @@ public class CategoryService {
 
     @Transactional
     public void deleteById(Long id) {
-        this.categoryRepository.deleteById(id);
+        Optional<Category> categoryOptional = this.categoryRepository.findById(id);
+        if(categoryOptional.isPresent()){
+            Category category = categoryOptional.get();
+            category.setDeletedDate(new Date());
+            this.categoryRepository.save(category);
+        }else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Category bulunamadı.");
+        }
     }
 }

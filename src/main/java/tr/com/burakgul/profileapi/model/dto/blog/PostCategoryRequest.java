@@ -4,13 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostRequest {
-    private String title;
-    private String content;
-    private List<PostCategoryRequest> categories;
+public class PostCategoryRequest {
+    private Long id;
 }

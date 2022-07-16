@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CommentRequest {
-    private Long id;
     private String content;
     private Long postId;
 }

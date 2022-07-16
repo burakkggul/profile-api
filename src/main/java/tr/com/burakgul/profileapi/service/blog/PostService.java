@@ -47,13 +47,14 @@ public class PostService {
 
     @Transactional
     public PostResponse save(PostRequest postRequest) {
-        //Sadece test için şimdilik.
-        User user = new User();
-        user.setId(1L);
         Post postToSave = this.dtoMapper.mapModel(postRequest,Post.class);
         ObjectHistoryUtil.initHistoricalEntity(postToSave);
         PostUtil.calculateAndSetReadingMinute(postToSave);
+        //FIXME Sadece test için şimdilik.
+        User user = new User();
+        user.setId(1L);
         postToSave.setCreatedBy(user);
+        //*********************************
         Post savedPost = this.postRepository.save(postToSave);
         PostResponse postResponse = this.dtoMapper.mapModel(savedPost,PostResponse.class);
         PostUtil.calculateAndSetCommentAndClapCount(savedPost,postResponse);
@@ -85,7 +86,7 @@ public class PostService {
         Optional<Post> optionalPost = this.postRepository.findById(postId);
         if(optionalPost.isPresent()){
             //Sadece test için şimdilik.
-            // FIXME cascade'de problem var.
+            //FIXME cascade'de problem var.
             User user = new User();
             user.setId(1L);
             Post post = optionalPost.get();
@@ -113,5 +114,10 @@ public class PostService {
         }else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Bu id ile post bulunamadı.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Post> findById(Long id){
+        return this.postRepository.findById(id);
     }
 }

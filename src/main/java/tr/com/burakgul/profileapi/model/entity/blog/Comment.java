@@ -6,6 +6,7 @@ import lombok.Setter;
 import tr.com.burakgul.profileapi.model.entity.User;
 import tr.com.burakgul.profileapi.model.entity.base.HistoricalBaseEntity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,7 +41,7 @@ public class Comment extends HistoricalBaseEntity {
 
     @OneToMany
     @JoinColumn(name = "comment_id")
-    private List<Clap> claps;
+    private List<Clap> claps = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

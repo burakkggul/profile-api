@@ -35,8 +35,9 @@ public class CommentController {
     }
 
     @PutMapping
-    public ResponseEntity<CommentResponse> update(@RequestBody CommentRequest commentRequest){
-        return ResponseEntity.ok(this.commentService.update(commentRequest));
+    public ResponseEntity<CommentResponse> update(@RequestBody CommentRequest commentRequest,
+                                                  @RequestParam Long commentId){
+        return ResponseEntity.ok(this.commentService.update(commentRequest,commentId));
     }
 
     @PutMapping("/clap")

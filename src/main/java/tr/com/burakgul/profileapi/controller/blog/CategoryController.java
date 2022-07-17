@@ -1,5 +1,9 @@
 package tr.com.burakgul.profileapi.controller.blog;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/blog/category")
+@Api(description = "Category API")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -29,8 +34,13 @@ public class CategoryController {
         return ResponseEntity.ok(this.categoryService.findAll());
     }
 
+    @ApiOperation(value = "update categories", notes = "Bunu dikkatli kullan.",httpMethod = "GET")
     @PutMapping
-    public ResponseEntity<CategoryResponse> update(@RequestBody CategoryResponse categoryResponse) {
+    public @ApiResponse(code = 300, message = "Bu bir test mesajıdır.")
+    ResponseEntity<CategoryResponse> update(@RequestBody
+                                            @ApiParam(name = "categoryResponse",
+                                                    required = true,
+                                                    readOnly = true) CategoryResponse categoryResponse) {
         return ResponseEntity.ok(this.categoryService.update(categoryResponse));
     }
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.burakgul.profileapi.model.dto.main.ResumeDTO;
 import tr.com.burakgul.profileapi.service.main.ResumeService;
@@ -26,8 +27,8 @@ public class ResumeController {
     }
 
     @PutMapping
-    public ResponseEntity<ResumeDTO> update(@RequestBody ResumeDTO resume){
-        return ResponseEntity.ok(this.resumeService.update(resume));
+    public ResponseEntity<ResumeDTO> update(@RequestBody ResumeDTO resume, @RequestParam Long id){
+        return ResponseEntity.ok(this.resumeService.update(resume, id));
     }
 
     @PostMapping

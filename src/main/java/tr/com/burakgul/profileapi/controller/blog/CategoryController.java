@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tr.com.burakgul.profileapi.auth.TokenManager;
 import tr.com.burakgul.profileapi.model.dto.blog.CategoryResponse;
 import tr.com.burakgul.profileapi.model.dto.blog.CategoryRequest;
 import tr.com.burakgul.profileapi.service.blog.CategoryService;

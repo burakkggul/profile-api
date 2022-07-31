@@ -22,14 +22,13 @@ public class TokenManager {
     public String generateToken(String username){
         long timeMillis = System.currentTimeMillis();
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(username)
                 .setIssuer("profile-api")
                 .setIssuedAt(new Date(timeMillis))
                 .setExpiration(new Date(timeMillis + this.expireMinute*60*1000))
                 .signWith(SignatureAlgorithm.HS512, this.key)
                 .compact();
-        return token;
     }
 
     public Boolean hasTokenValid(String token){

@@ -1,7 +1,6 @@
 package tr.com.burakgul.profileapi.service.main;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.jdbc.Work;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

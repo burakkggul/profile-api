@@ -3,6 +3,7 @@ package tr.com.burakgul.profileapi.exception.handler;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,6 +34,16 @@ public class GlobalExceptionHandler {
                                 .status(responseStatusException.getStatus())
                                 .timestamp(new Date())
                                 .build());
+    }
+
+    @ExceptionHandler(value = BadCredentialsException.class)
+    public ResponseEntity<ExceptionMessage> handleExceptions(BadCredentialsException exception) {
+        exception.printStackTrace();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                ExceptionMessage.builder()
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .message("Kullanıcı adı veya parola hatalı.")
+                        .timestamp(new Date()).build());
     }
 
     @ExceptionHandler(value = Exception.class)

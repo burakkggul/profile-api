@@ -10,14 +10,16 @@ import tr.com.burakgul.profileapi.auth.TokenManager;
 import tr.com.burakgul.profileapi.model.dto.LoginDTO;
 import tr.com.burakgul.profileapi.model.dto.UserRequest;
 import tr.com.burakgul.profileapi.model.dto.UserResponse;
+import tr.com.burakgul.profileapi.model.entity.User;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
+
     private final AuthenticationManager authenticationManager;
-    private TokenManager tokenManager;
-    
+
+    private final TokenManager tokenManager;
 
     private final UserDetailService userDetailService;
 

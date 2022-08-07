@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import tr.com.burakgul.profileapi.core.helper.DTOMapper;
+import tr.com.burakgul.profileapi.model.dto.UserResponse;
 import tr.com.burakgul.profileapi.model.entity.User;
 import tr.com.burakgul.profileapi.repository.blog.UserRepository;
 
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class UserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final DTOMapper dtoMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -26,4 +29,10 @@ public class UserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(username + " is not found.");
         }
     }
+
+    public UserResponse save(User user){
+        User savedUser = this.userRepository.save(user);
+        return this.dtoMapper.mapModel(savedUser, UserResponse.class);
+    }
+
 }

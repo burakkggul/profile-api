@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tr.com.burakgul.profileapi.auth.JwtTokenFilter;
-import tr.com.burakgul.profileapi.auth.UserDetailService;
+import tr.com.burakgul.profileapi.service.UserDetailService;
 
 @Configuration
 @EnableWebSecurity

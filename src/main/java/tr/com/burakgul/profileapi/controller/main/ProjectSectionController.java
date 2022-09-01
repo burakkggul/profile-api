@@ -21,8 +21,8 @@ public class ProjectSectionController {
     private final ProjectSectionService projectSectionService;
 
     @GetMapping
-    public ResponseEntity<ProjectSectionDTO> find(){
-        return ResponseEntity.ok(this.projectSectionService.find());
+    public ResponseEntity<ProjectSectionDTO> findProjectSection(){
+        return ResponseEntity.ok(this.projectSectionService.findProjectSection());
     }
 
     @PostMapping

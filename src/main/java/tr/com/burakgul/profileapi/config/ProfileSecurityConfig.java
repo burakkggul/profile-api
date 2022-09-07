@@ -41,7 +41,7 @@ public class ProfileSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] whiteList = {"/auth/**","/healthCheck","/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"};
+        String[] whiteList = {"/auth/**","/healthcheck","/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"};
 
         http.csrf().disable()
                 .authorizeRequests().antMatchers(whiteList).permitAll().anyRequest().authenticated()

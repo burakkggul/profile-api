@@ -25,7 +25,7 @@ public class SkillController {
         return ResponseEntity.ok(this.skillService.save(skillRequest));
     }
 
-    @PutMapping("/skillId")
+    @PutMapping("/{skillId}")
     public ResponseEntity<SkillDTO> update(@RequestBody SkillDTO skillRequest, @PathVariable Long skillId) {
         return ResponseEntity.ok(this.skillService.update(skillRequest, skillId));
     }

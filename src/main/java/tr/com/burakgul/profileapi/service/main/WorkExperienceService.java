@@ -25,10 +25,10 @@ public class WorkExperienceService {
     @Transactional(readOnly = true)
     public List<WorkExperienceDTO> findAll() {
         List<WorkExperience> workExperienceList = this.workExperienceRepository.findAll();
-        if (workExperienceList.size() != 0) {
-            return this.dtoMapper.mapListModel(workExperienceList, WorkExperienceDTO.class);
-        } else {
+        if (workExperienceList.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Herhangi bir Work Experience bulunamadi.");
+        } else {
+            return this.dtoMapper.mapListModel(workExperienceList, WorkExperienceDTO.class);
         }
     }
 

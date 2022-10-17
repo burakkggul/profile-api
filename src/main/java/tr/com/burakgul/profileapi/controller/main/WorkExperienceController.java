@@ -22,7 +22,7 @@ public class WorkExperienceController {
         return ResponseEntity.ok(this.workExperienceService.save(workExperienceRequest));
     }
 
-    @PutMapping("/workExperienceId")
+    @PutMapping("/{workExperienceId}")
     public ResponseEntity<WorkExperienceDTO> update(@RequestBody WorkExperienceDTO workExperienceRequest, @PathVariable Long workExperienceId){
         return ResponseEntity.ok(this.workExperienceService.update(workExperienceRequest, workExperienceId));
     }

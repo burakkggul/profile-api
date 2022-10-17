@@ -1,12 +1,12 @@
 package tr.com.burakgul.profileapi.model.dto;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class UserRequest {
     private String username;
 

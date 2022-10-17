@@ -25,7 +25,7 @@ public class EducationController {
         return ResponseEntity.ok(this.educationService.save(educationRequest));
     }
 
-    @PutMapping("/educationId")
+    @PutMapping("/{educationId}")
     public ResponseEntity<EducationDTO> update(@RequestBody EducationDTO educationRequest, @PathVariable Long educationId) {
         return ResponseEntity.ok(this.educationService.update(educationRequest, educationId));
     }

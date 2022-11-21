@@ -5,14 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import tr.com.burakgul.profileapi.core.helper.DTOMapper;
 import tr.com.burakgul.profileapi.core.util.ObjectUpdaterUtil;
-import tr.com.burakgul.profileapi.model.dto.main.HeaderRequest;
-import tr.com.burakgul.profileapi.model.dto.main.HeaderResponse;
-import tr.com.burakgul.profileapi.model.entity.main.Header;
+import tr.com.burakgul.profileapi.model.dto.ImageDTO;
+import tr.com.burakgul.profileapi.model.dto.main.*;
 import tr.com.burakgul.profileapi.model.entity.Image;
-import tr.com.burakgul.profileapi.model.entity.main.SocialMedia;
+import tr.com.burakgul.profileapi.model.entity.main.*;
 import tr.com.burakgul.profileapi.repository.main.HeaderRepository;
 import tr.com.burakgul.profileapi.repository.main.ImageRepository;
 import tr.com.burakgul.profileapi.repository.main.SocialMediaRepository;
@@ -48,6 +48,16 @@ public class HeaderService {
     // private final ModelMapper modelMapper;
     private final DTOMapper dtoMapper;
 
+    @Transactional(readOnly = true)
+    public HeaderResponse findHeader() {
+        Optional<Header> headerOptional = this.headerRepository.findTopByOrderByIdDesc();
+        if (headerOptional.isPresent()) {
+            return this.dtoMapper.mapModel(headerOptional.get(), HeaderResponse.class);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı.");
+        }
+    }
+
     /*
     public HeaderResponse save(HeaderRequest headerRequest) {
         // Header header = this.objectMapper.convertValue(headerRequest, Header.class);
@@ -58,47 +68,36 @@ public class HeaderService {
         return headerResponse;
     }
     */
-
+    @Transactional
     public HeaderResponse save(HeaderRequest headerRequest) {
-        Header header = this.dtoMapper.mapModel(headerRequest, Header.class);
-        Image image = this.imageRepository.save(header.getImage());
-        List<SocialMedia> savedSocialMedia = this.socialMediaRepository.saveAll(header.getSocialMedia());
-        header.setImage(image);
-        header.setSocialMedia(savedSocialMedia);
-        Header savedHeader = this.headerRepository.save(header);
-        HeaderResponse headerResponse = this.dtoMapper.mapModel(savedHeader, HeaderResponse.class);
-        return headerResponse;
-    }
-
-    /**
-     * Burda socialMedia ve image güncellenmiyor.
-     * Bunların güncellenmesini sağlayacak şekilde bu metodu güncelleyelim.
-     * @param headerRequest
-     * @return
-     */
-    public HeaderResponse update(HeaderRequest headerRequest) {
-        Header upToDateHeader = this.dtoMapper.mapModel(headerRequest, Header.class);
-        Header currentHeader = this.headerRepository.findTopByOrderByIdDesc()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı."));
-        this.updateHeaderObjectWithRelations(currentHeader,upToDateHeader);
-        Header savedHeader = this.headerRepository.save(currentHeader);
+        Header headerToBeSavedOrUpdated = this.dtoMapper.mapModel(headerRequest, Header.class);
+        this.setHeaderWithRelations(headerToBeSavedOrUpdated, headerRequest);
+        Header savedHeader = this.headerRepository.save(headerToBeSavedOrUpdated);
         return this.dtoMapper.mapModel(savedHeader, HeaderResponse.class);
     }
 
-    public Object findHeader() {
-        Optional<Header> headerOptional = this.headerRepository.findTopByOrderByIdDesc();
-        if (headerOptional.isPresent()) {
-            return this.dtoMapper.mapModel(headerOptional.get(), HeaderResponse.class);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadı.");
-        }
+    @Transactional
+    public HeaderResponse update(HeaderRequest headerRequest) {
+        Header headerToBeSavedOrUpdated = this.headerRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Header bulunamadi"));
+        this.updateHeaderWithRelations(headerToBeSavedOrUpdated, headerRequest);
+        Header savedHeader = this.headerRepository.save(headerToBeSavedOrUpdated);
+        return this.dtoMapper.mapModel(savedHeader, HeaderResponse.class);
     }
 
-    private void updateHeaderObjectWithRelations(Header currentHeader, Header upToDateHeader){
-        ObjectUpdaterUtil.updateObject(currentHeader, upToDateHeader, Arrays.asList("id", "socialMedia", "image"));
-        List<SocialMedia> socialMedia = this.socialMediaService.saveAll(upToDateHeader.getSocialMedia());
-        currentHeader.setSocialMedia(socialMedia);
-        Image image = this.imageService.save(upToDateHeader.getImage());
-        currentHeader.setImage(image);
+    private void updateHeaderWithRelations(Header headerToBeSavedOrUpdated, HeaderRequest headerRequest) {
+        Resume upToDateHeader = this.dtoMapper.mapModel(headerRequest, Resume.class);
+        ObjectUpdaterUtil.updateObject(headerToBeSavedOrUpdated, upToDateHeader, Arrays.asList("id", "socialMedia", "image"));
+        this.setHeaderWithRelations(headerToBeSavedOrUpdated, headerRequest);
+    }
+
+    private void setHeaderWithRelations(Header headerToBeSavedOrUpdated, HeaderRequest headerRequest) {
+        List<SocialMediaDTO> savedSocialMedias = this.socialMediaService.saveAll(headerRequest.getSocialMedia());
+        List<SocialMedia> mappedSocialMediasToSetHeader = this.dtoMapper.mapListModel(savedSocialMedias, SocialMedia.class);
+        headerToBeSavedOrUpdated.setSocialMedia(mappedSocialMediasToSetHeader);
+
+        ImageDTO savedImage = this.imageService.save(headerRequest.getImage());
+        Image mappedImageToSetHeader = this.dtoMapper.mapModel(savedImage, Image.class);
+        headerToBeSavedOrUpdated.setImage(mappedImageToSetHeader);
     }
 }

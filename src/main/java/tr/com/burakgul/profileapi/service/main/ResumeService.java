@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import tr.com.burakgul.profileapi.core.helper.DTOMapper;
 import tr.com.burakgul.profileapi.core.util.ObjectUpdaterUtil;
+import tr.com.burakgul.profileapi.model.dto.main.EducationDTO;
 import tr.com.burakgul.profileapi.model.dto.main.ResumeDTO;
 import tr.com.burakgul.profileapi.model.dto.main.WorkExperienceDTO;
 import tr.com.burakgul.profileapi.model.entity.main.Education;
 import tr.com.burakgul.profileapi.model.entity.main.WorkExperience;
-import tr.com.burakgul.profileapi.model.dto.main.EducationDTO;
 import tr.com.burakgul.profileapi.repository.main.ResumeRepository;
 import tr.com.burakgul.profileapi.model.entity.main.Resume;
 
@@ -29,39 +29,47 @@ public class ResumeService {
     private final EducationService educationService;
     private final DTOMapper dtoMapper;
 
-    @Transactional
-    public ResumeDTO save(ResumeDTO resumeRequest) {
-        Resume resume = this.dtoMapper.mapModel(resumeRequest, Resume.class);
-        Resume savedResume = this.resumeRepository.save(resume);
-        return this.dtoMapper.mapModel(savedResume, ResumeDTO.class);
-    }
-
-    @Transactional
-    public ResumeDTO update(ResumeDTO resumeRequest, Long id) {
-        Optional<Resume> resumeOptional = this.resumeRepository.findById(id);
-        if (resumeOptional.isPresent()) {
-            Resume currentResume = resumeOptional.get();
-            this.updateResumeObjectWithRelations(currentResume, resumeRequest);
-            return this.dtoMapper.mapModel(currentResume, ResumeDTO.class);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resume bulunamadi!");
-        }
-    }
-
     @Transactional(readOnly = true)
-    public ResumeDTO find() {
+    public ResumeDTO findResume() {
         Resume resume = this.resumeRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resume bulunamadi"));
         return this.dtoMapper.mapModel(resume, ResumeDTO.class);
     }
 
-    private void updateResumeObjectWithRelations(Resume currentResume, ResumeDTO resumeRequest) {
-        ObjectUpdaterUtil.updateObject(currentResume, resumeRequest, Arrays.asList("id", "workExperiences", "educations"));
-        List<WorkExperienceDTO> workExperiences = this.workExperienceService.saveAll(resumeRequest.getWorkExperiences());
-        List<WorkExperience> savedWorkExperience = this.dtoMapper.mapListModel(workExperiences, WorkExperience.class);
-        currentResume.setWorkExperiences(savedWorkExperience);
-        List<EducationDTO> educations = this.educationService.saveAll(resumeRequest.getEducations());
-        List<Education> savedEducation = this.dtoMapper.mapListModel(educations, Education.class);
-        currentResume.setEducations(savedEducation);
+    @Transactional
+    public ResumeDTO save(ResumeDTO resumeRequest) {
+        Resume resumeToBeSavedOrUpdated = this.dtoMapper.mapModel(resumeRequest, Resume.class);
+        this.setResumeWithRelations(resumeToBeSavedOrUpdated, resumeRequest);
+        Resume savedResume = this.resumeRepository.save(resumeToBeSavedOrUpdated);
+        return this.dtoMapper.mapModel(savedResume, ResumeDTO.class);
+    }
+
+    @Transactional
+    public ResumeDTO update(ResumeDTO resumeRequest) {
+        Optional<Resume> resumeOptional = this.resumeRepository.findTopByOrderByIdDesc();
+        if (resumeOptional.isPresent()) {
+            Resume resumeToBeSavedOrUpdated = resumeOptional.get();
+            this.updateResumeWithRelations(resumeToBeSavedOrUpdated, resumeRequest);
+            Resume savedResume = this.resumeRepository.save(resumeToBeSavedOrUpdated);
+            return this.dtoMapper.mapModel(savedResume, ResumeDTO.class);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resume bulunamadi!");
+        }
+    }
+
+    private void updateResumeWithRelations(Resume resumeToBeSavedOrUpdated, ResumeDTO resumeRequest) {
+        Resume upToDateResume = this.dtoMapper.mapModel(resumeRequest, Resume.class);
+        ObjectUpdaterUtil.updateObject(resumeToBeSavedOrUpdated, upToDateResume, Arrays.asList("id", "workExperiences", "educations"));
+        this.setResumeWithRelations(resumeToBeSavedOrUpdated, resumeRequest);
+    }
+
+    private void setResumeWithRelations(Resume resumeToBeSavedOrUpdated, ResumeDTO resumeRequest){
+        List<WorkExperienceDTO> savedWorkExperiences = this.workExperienceService.saveAll(resumeRequest.getWorkExperiences());
+        List<WorkExperience> mappedWorkExperiencesToSetResume = this.dtoMapper.mapListModel(savedWorkExperiences, WorkExperience.class);
+        resumeToBeSavedOrUpdated.setWorkExperiences(mappedWorkExperiencesToSetResume);
+
+        List<EducationDTO> savedEducations = this.educationService.saveAll(resumeRequest.getEducations());
+        List<Education> mappedEducationsToSetResume = this.dtoMapper.mapListModel(savedEducations, Education.class);
+        resumeToBeSavedOrUpdated.setEducations(mappedEducationsToSetResume);
     }
 }

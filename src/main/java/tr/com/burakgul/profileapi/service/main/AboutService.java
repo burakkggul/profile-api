@@ -7,10 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import tr.com.burakgul.profileapi.core.helper.DTOMapper;
 import tr.com.burakgul.profileapi.core.util.ObjectUpdaterUtil;
-import tr.com.burakgul.profileapi.model.dto.main.AboutRequest;
-import tr.com.burakgul.profileapi.model.dto.main.AboutResponse;
-import tr.com.burakgul.profileapi.model.entity.main.About;
-import tr.com.burakgul.profileapi.model.entity.main.Contact;
+import tr.com.burakgul.profileapi.model.dto.main.*;
+import tr.com.burakgul.profileapi.model.entity.main.*;
 import tr.com.burakgul.profileapi.repository.main.AboutRepository;
 
 import java.util.Arrays;
@@ -46,31 +44,35 @@ public class AboutService {
 
     @Transactional
     public AboutResponse save(AboutRequest aboutRequest) {
-        About aboutToSave = this.dtoMapper.mapModel(aboutRequest, About.class);
-        /*List<Contact> contacts = this.contactService.saveAll(aboutToSave.getContacts());
-        aboutToSave.setContacts(contacts);*/
-        About savedAbout = this.aboutRepository.save(aboutToSave);
+        About aboutToBeSavedOrUpdated = this.dtoMapper.mapModel(aboutRequest, About.class);
+        this.setAboutWithRelations(aboutToBeSavedOrUpdated, aboutRequest);
+        About savedAbout = this.aboutRepository.save(aboutToBeSavedOrUpdated);
         return this.dtoMapper.mapModel(savedAbout, AboutResponse.class);
     }
+
 
     @Transactional
     public AboutResponse update(AboutRequest aboutRequest) {
         Optional<About> aboutOptional = this.aboutRepository.findTopByOrderByIdDesc();
-
         if (aboutOptional.isPresent()) {
-            About currentAbout = aboutOptional.get();
-            About upToDateAbout = this.dtoMapper.mapModel(aboutRequest, About.class);
-            this.updateAboutObjectWithRelations(currentAbout, upToDateAbout);
-            return this.dtoMapper.mapModel(currentAbout, AboutResponse.class);
+            About aboutToBeSavedOrUpdated = aboutOptional.get();
+            this.updateAboutWithRelations(aboutToBeSavedOrUpdated, aboutRequest);
+            About savedAbout = this.aboutRepository.save(aboutToBeSavedOrUpdated);
+            return this.dtoMapper.mapModel(savedAbout, AboutResponse.class);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "About bulunamadı.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "About bulunamadi!");
         }
     }
 
-    @Transactional
-    public void updateAboutObjectWithRelations(About currentAbout, About upToDateAbout) {
-        ObjectUpdaterUtil.updateObject(currentAbout, upToDateAbout, Arrays.asList("id", "contacts"));
-        List<Contact> contacts = this.contactService.saveAll(upToDateAbout.getContacts());
-        currentAbout.setContacts(contacts);
+    private void updateAboutWithRelations(About aboutToBeSavedOrUpdated, AboutRequest aboutRequest) {
+        About upToDateAbout = this.dtoMapper.mapModel(aboutRequest, About.class);
+        ObjectUpdaterUtil.updateObject(aboutToBeSavedOrUpdated, upToDateAbout, Arrays.asList("id", "contacts"));
+        this.setAboutWithRelations(aboutToBeSavedOrUpdated, aboutRequest);
+    }
+
+    private void setAboutWithRelations(About aboutToBeSavedOrUpdated, AboutRequest aboutRequest){
+        List<ContactResponse> savedContacts = this.contactService.saveAll(aboutRequest.getContacts());
+        List<Contact> mappedContactsToSetAbout = this.dtoMapper.mapListModel(savedContacts, Contact.class);
+        aboutToBeSavedOrUpdated.setContacts(mappedContactsToSetAbout);
     }
 }

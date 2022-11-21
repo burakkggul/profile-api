@@ -34,5 +34,4 @@ public class UserDetailService implements UserDetailsService {
         User savedUser = this.userRepository.save(user);
         return this.dtoMapper.mapModel(savedUser, UserResponse.class);
     }
-
 }

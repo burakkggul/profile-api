@@ -20,7 +20,7 @@ public class HeaderController {
     private final HeaderService headerService;
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody HeaderRequest headerRequest){
+    public ResponseEntity<HeaderResponse> save(@RequestBody HeaderRequest headerRequest){
         return ResponseEntity.ok(this.headerService.save(headerRequest));
     }
 
